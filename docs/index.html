@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="t3.css">
+    <title>❌Tic Tac Toe⭕</title>
+</head>
+<body>
+    <header class="title-container">
+        <div class="title">Tic<span class="rotate">k</span> Tac Toe</div>
+    </header>
+    <main class="main">
+        <div class="turn-container">
+            <div class="turn"></div>
+        </div>
+        <div id="board-container">
+
+        </div>
+    </main>
+    <dialog class="player-names" >
+        <form class="form">
+            <div class="top">
+                <p>Enter Player's Name</p>
+                <button value="cancel" formmethod="dialog" id="closeButton">×</button>
+            </div>
+            <div class="player-names-container">
+                <div class="player1-container">
+                    <label for="player1">
+                        <p>Player 1:</p>
+                        <input type="text" id="player1" name="player">
+                    </label>
+                    <div class="marker-container">
+                        <p>Marker: X</p>
+                    </div>
+                </div>
+                <div class="player2-container">
+                    <label for="player2">
+                        <p>Player 2:</p>
+                        <input type="text" id="player2" name="player">
+                    </label>
+                    <div class="marker-container">
+                        <p>Marker: O</p>
+                    </div>
+                </div>
+            </div>
+            <div class="confirmBtn">
+                <button value="default">Play</button>
+            </div>
+        </form>
+    </dialog>
+    <script src="t3.js"></script>
+</body>
+</html>
