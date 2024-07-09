@@ -144,4 +144,15 @@ input {
     opacity: 60%;
 }
 
+/* --------------------------------- */
+
+.turn-container {
+    display: grid;
+}
+.turn {
+    place-self: center;
+    color: #eee;
+    font-size: 2.3rem;
+    font-family: cursive;
+}
 

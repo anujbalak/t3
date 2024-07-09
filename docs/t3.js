@@ -36,23 +36,15 @@ getPlayerNames.addEventListener('close', (e) => {
         const player2 = new Player(player2Name.value);
         players.push(player2);
     }
-})
+    if (players.length != 0) {
+        currentPlayer.textContent = players[0].name;
+    }
+});
 
 confirmBtn.addEventListener('click', (e) => {
     e.preventDefault();
     getPlayerNames.close(player1Name.value, player2Name.value);
 })
-
-const changeCurrentPlayer = function(lastChoice) {
-    if (lastChoice === 'X') {
-        currentPlayer.textContent = players[1].name;
-    } else if (lastChoice === 'O') {
-        currentPlayer.textContent = players[0].name;
-    } else {
-        currentPlayer.textContent = players[0].name;
-    }
-}
-
 
 
 function gameboard() {
@@ -72,17 +64,23 @@ function gameboard() {
                 xOrO.textContent = 'O';
                 board[i] = 'O';
                 lastChoice = 'O'
-                console.log(lastChoice);
             } else if (lastChoice === 'O' && xOrO.textContent == '') {
                 xOrO.textContent = 'X';
                 board[i] = 'X';
                 lastChoice = 'X'
-                console.log(lastChoice);
             } else if (xOrO.textContent == '') {
                 lastChoice = 'X'
                 xOrO.textContent = 'X'
                 board[i] = 'X';
-                console.log(lastChoice);
+            }
+            if (players.length > 0) {
+                if (lastChoice == 'X') {
+                    currentPlayer.textContent = players[1].name;
+                } else if (lastChoice == 'O') {
+                    currentPlayer.textContent = players[0].name;
+                } else {
+                    currentPlayer.textContent = players[0].name;
+                }
             }
         });
     }
@@ -105,19 +103,6 @@ const winCombo = [
 
 
 const b = gameboard();
-
-// function setChoices() {
-//     b.getBoard()[0] = 'X';
-//     b.getBoard()[1] = 'O';
-//     b.getBoard()[2] = 'O';
-//     b.getBoard()[3] = 'X';
-//     b.getBoard()[4] = 'X';
-//     b.getBoard()[5] = 'O';
-//     b.getBoard()[6] = 'X';
-//     b.getBoard()[7] = 'X';
-// }
-// setChoices();
-console.log(b.getBoard())
 
 function indexes() {
     const indexesOfXs = function() {
