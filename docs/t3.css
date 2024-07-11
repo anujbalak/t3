@@ -7,10 +7,12 @@ body {
     display: grid;
     grid-template-rows: minmax(100px, 1fr) 10fr;
     height: 100vh;
+    max-width: 100vw;
     background-color: #9e8994;
 }
 
 header {
+    max-width: 100vw;
     display: grid;
     background-color: #886d7b;
     border: solid 1px #b5a0aa;
@@ -29,6 +31,7 @@ main {
     width: 100vw;
     display: grid;
     background-color: #9e8994;
+    grid-template-rows: 100px 1fr;
 }
 
 #board-container {
@@ -36,7 +39,7 @@ main {
     place-self: center;
     grid-template: repeat(3, 1fr) / repeat(3, 1fr);
     background-color: #886d7b;
-    width: 600px;
+    width: min(95%, 600px);
     height: 600px;
     border-radius: 30px;
     border: solid 1px #b5a0aa;
@@ -51,6 +54,7 @@ main {
 }
 
 .xOrO {
+    text-shadow: 5px 5px #886d7b;
     place-self: center;
     font-size: 7rem;
     font-family: cursive;
@@ -126,7 +130,7 @@ input {
 .confirmBtn {
     display: grid;
 }
-.confirmBtn>button {
+button {
     color: #eee;
     border: none;
     font-size: 1.5rem;
@@ -156,3 +160,28 @@ input {
     font-family: cursive;
 }
 
+
+/*---------------- finish dialog -------------------*/
+.win-message-container {
+    display: grid;
+    grid-template-rows: 2fr 1fr;
+    gap: 15px;
+    width: 300px;
+}
+.winner-text {
+    color: #eee;
+    font-size: 1.7rem;
+    font-family: cursive;
+}
+.win-dialog-action {
+    display: flex;
+    gap: 20%;
+}
+/* --------------media --------------- */
+
+@media only screen and (min-height: 900px) {
+    .board-container {
+        width: 600px;
+    } 
+    
+}
