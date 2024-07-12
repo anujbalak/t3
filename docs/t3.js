@@ -1,13 +1,13 @@
 let winner = String;
 let winMsg = String;
+let lastChoice = String;
 let gameFinished = false;
+let gameStarted = false;
 const gameContainer = document.querySelector('#board-container');
 const changeTurn = document.querySelector('div>.turn');
 let currentPlayer = document.querySelector('.turn');
+let startBtn = document.querySelector('.game-actions-container>button.start');
 
-function startGame() {
-    gameboard();
-}
 
 function Player(name) {
     this.name = name;
@@ -56,7 +56,23 @@ confirmBtn.addEventListener('click', (e) => {
 function gameboard() {
     const board = [];
     const cells = 9;
-    let lastChoice = String;
+
+    const render = () => renderBoard(board, cells);
+    const getBoard= () => board;
+    startBtn.addEventListener('click', () => {
+        if (gameStarted == false) {
+            render();
+            startBtn.textContent = 'Restart';
+            gameStarted = true
+        }
+    })
+    return {
+        getBoard, render
+    }
+}
+
+
+function renderBoard(board, cells) {
     for (let i = 0; i < cells; i++) {
         const cell = document.createElement('div')
         const xOrO = document.createElement('div');
@@ -65,37 +81,36 @@ function gameboard() {
         xOrO.className = 'xOrO';
         gameContainer.appendChild(cell)
         cell.appendChild(xOrO);
-        cell.addEventListener('click', (e) => {
-            if (gameFinished === false) {
-            if (lastChoice === 'X' && xOrO.textContent == '') {
-                xOrO.textContent = 'O';
-                board[i] = 'O';
-                lastChoice = 'O'
-            } else if (lastChoice === 'O' && xOrO.textContent == '') {
-                xOrO.textContent = 'X';
-                board[i] = 'X';
-                lastChoice = 'X'
-            } else if (xOrO.textContent == '') {
-                lastChoice = 'X'
-                xOrO.textContent = 'X'
-                board[i] = 'X';
-            }
-            if (players.length > 0) {
-                if (lastChoice == 'X') {
-                    currentPlayer.textContent = `${players[1].name} turn [O]`;
-                } else {
-                    currentPlayer.textContent = `${players[0].name} turn [X]`;
-                }
-            }
-            checkForResult(xOrO);
-            }
-        });
-        
+        getPlayersInput(xOrO, cell, board, i)   
     }
-    const getBoard= () => board;
-    return {
-        getBoard,
-    }
+}
+
+function getPlayersInput(xOrO, cell, board, i) {
+    cell.addEventListener('click', (e) => {
+        if (gameFinished === false) {
+        if (lastChoice === 'X' && xOrO.textContent == '') {
+            xOrO.textContent = 'O';
+            board[i] = 'O';
+            lastChoice = 'O'
+        } else if (lastChoice === 'O' && xOrO.textContent == '') {
+            xOrO.textContent = 'X';
+            board[i] = 'X';
+            lastChoice = 'X'
+        } else if (xOrO.textContent == '') {
+            lastChoice = 'X'
+            xOrO.textContent = 'X'
+            board[i] = 'X';
+        }
+        if (players.length > 0) {
+            if (lastChoice == 'X') {
+                currentPlayer.textContent = `${players[1].name} turn [O]`;
+            } else {
+                currentPlayer.textContent = `${players[0].name} turn [X]`;
+            }
+        }
+        checkForResult(xOrO);
+        }
+    });
 }
 
 const winCombo = [
@@ -133,8 +148,8 @@ function indexes() {
         indexesOfXs, indexesOfOs
     }
 }
+const arr = indexes();
 function checkForResult(w) {
-    const arr = indexes();
     if (b.getBoard().length > 4) {
         for (let i = 0; i < 9; i++) {
             if ( winCombo[i] != undefined) {
@@ -146,7 +161,7 @@ function checkForResult(w) {
                 win = 'X';
                 winner = players[0].name;
                 coloredCell(win)
-                setTimeout(finishedDialog, 1000 * 1.5);
+                setTimeout(finishedDialog, 1000 * 1.5, win);
                 winMsg = `${players[0].name} win the game`;
                 currentPlayer.textContent = winMsg;
             } else if (indexesMathcesWinComboForO) {
@@ -156,9 +171,12 @@ function checkForResult(w) {
                 win = 'O';
                 coloredCell(win)
                 currentPlayer.textContent = winMsg;
+                setTimeout(finishedDialog, 1000 * 1.5, win);
             } else if (Object.keys(b.getBoard()).length > 8) {
                 gameFinished = true;
+                win = 'draw'
                 currentPlayer.textContent = 'Its a draw'; 
+                setTimeout(finishedDialog, 1000 * 1.5, win);
             }
             }
         } 
@@ -177,23 +195,34 @@ const coloredCell = function(win) {
     });
 }
 
-function checkForEmpty() {
-    if ([1,2,,3].some((element) => element == undefined)) {
-        console.log('anun')
-    }
-}
-const p = Object.getPrototypeOf(b.getBoard)
-const checkUndefined = function() {
-    for (let i; i < b.getBoard().length; i++) {
-            b.getBoard()[i];
+function finishedDialog(win) {
+    const finishMessageContainer = document.querySelector('dialog.win-message');
+    const finishMessage = document.querySelector('div.winner-text');
+    const playAgainBtn = document.querySelector('.play-again');
+    const cancelBtn = document.querySelector('.win-dialog-action .cancel');
+    if (gameFinished === true) {
+        finishMessageContainer.showModal()
+        if (win === 'X' || win === 'O') {
+            finishMessage.textContent = `${winner} has won this match. Would you like to play again?`
+        } else if (win === 'draw') {
+            finishMessage.textContent = 'Would You like to play again?'
+        }
+        playAgainBtn.addEventListener('click', () => {
+            location.reload();
+        });
+        cancelBtn.addEventListener('click', () => {
+            finishMessageContainer.close();
+        })
     }
 }
 
-function finishedDialog() {
-    const finishMessageContainer = document.querySelector('dialog.win-message');
-    const finishMessage = document.querySelector('div.winner-text');
-    if (gameFinished === true) {
-        finishMessageContainer.showModal()
-        finishMessage.textContent = `${winner} has won this match. Would you like to play again?`
+function restart() {
+startBtn.addEventListener('click', () => {
+    if (gameStarted === true && Object.keys(b.getBoard()).length > 0) {
+        location.reload();
+    } else {
+        return;
     }
+})
 }
+restart();

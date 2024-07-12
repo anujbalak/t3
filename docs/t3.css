@@ -31,7 +31,7 @@ main {
     width: 100vw;
     display: grid;
     background-color: #9e8994;
-    grid-template-rows: 100px 1fr;
+    grid-template-rows: 50px 50px 10fr;
 }
 
 #board-container {
@@ -177,6 +177,21 @@ button {
     display: flex;
     gap: 20%;
 }
+/* ----------------------start/reset--------------------------- */
+.game-actions-container {
+    display: grid;
+    justify-items: center;
+    gap: 15px;
+}
+.game-actions-container button {
+    height: auto;
+}
+
+.game-actions-container>.start {
+    width: 100px;
+    place-self: center;
+}
+
 /* --------------media --------------- */
 
 @media only screen and (min-height: 900px) {
